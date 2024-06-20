@@ -1,0 +1,9 @@
+0) Clean builds:
+mvn package
+
+1) Build the app:
+mvn package
+
+2) Run the app:
+java -cp target/lab02-1.0-SNAPSHOT.jar edu.pacific.cs.App
+
