@@ -1,0 +1,42 @@
+Method used: Classic.qsum()
+
+qsum() takes 2 integers and returns an integer.
+
+1) Calculate Bit lengths.
+
+2) Create Quantum Program with Summation of Bit lengths as a number of Qubits.
+    (
+        A Program contains a list of Steps that are executed sequentially by a QuantumExecutionEnvironment.
+        In a step, a number of Gates can be added, involving a number of Qubits. However,
+        in a single step a qubit can be involved in at most one Gate.
+        It is illegal to declare 2 gates in a single step that operate on the same qubit.
+        Typically, a step contains instructions that alter the quantum circuit.
+        A Gate describes an operation on one or more qubits. Gates are combined in Steps,
+        and Steps are added to a quantum Program.
+    )
+
+3) Create and add initial step with a number of gates that correspond to the binary representation of input integers.
+
+4) Add another step with a Fourier gate with size of bigger Bit length.
+    (
+        Quantum Fourier transform (QFT) is a linear transformation on quantum bits,
+        and is the quantum analogue of the discrete Fourier transform.
+        Quantum Fourier transform can be viewed as a quantum gate.
+    )
+
+5) Add steps with Control-R gates.
+    (
+        Controlled Rotations.
+        These gates perform a rotation on a target Qubit conditioned on the state of a control Qubit.
+    )
+
+6) Add step with Inverse Fourier gates.
+    (
+        The inverse Fourier transform is extremely similar to the original Fourier transform.
+        It differs only in the application of a flip operator.
+        Quantum Inverse Fourier transform can be viewed as a quantum gate.
+    )
+
+7) Run the Quantum Program.
+
+8) Calculate Sum by measurement of Qubits.
