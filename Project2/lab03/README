@@ -1,0 +1,4 @@
+0) Build and run:
+mvn clean javafx:run
+
+Note: AboutClassic.txt contains info about used Classic method.
