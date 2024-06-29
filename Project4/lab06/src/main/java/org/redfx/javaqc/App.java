@@ -1,17 +1,16 @@
 package org.redfx.javaqc;
 
 import java.util.Scanner;
+
 import org.redfx.strange.*;
 import org.redfx.strange.gate.*;
 import org.redfx.strange.local.*;
 import org.redfx.strangefx.render.Renderer;
 
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println( "Select quantum circuit (type 0 or 1):" );
+        System.out.println("Select quantum circuit (type 0 or 1):");
         int circuit = scanner.nextInt();
 
         if (circuit == 0) {
@@ -58,7 +57,7 @@ public class App
             System.out.println("Value is = " + value);
             Renderer.renderProgram(program);
         } else {
-            System.out.println( "Incorrect quantum circuit number!" );
+            System.out.println("Incorrect quantum circuit number!");
         }
     }
 }
