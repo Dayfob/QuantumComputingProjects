@@ -1,0 +1,2 @@
+0) Build and run (-q is optional):
+mvn -q clean javafx:run
