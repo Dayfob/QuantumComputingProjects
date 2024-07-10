@@ -1,13 +1,96 @@
 package org.redfx.javaqc;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import java.util.Scanner;
+
+import org.redfx.strange.*;
+import org.redfx.strange.gate.*;
+import org.redfx.strange.local.*;
+import org.redfx.strangefx.render.Renderer;
+
+public class App {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Select quantum circuit (type 1, 2 or 3):");
+        int circuit = scanner.nextInt();
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (circuit == 1) {
+                    int sum = add(i, j);
+                    System.err.println("Adding " + i + " + " + j + " = " + sum);
+                } else if (circuit == 2) {
+                    int and = and(i, j);
+                    System.err.println(i + " AND " + j + " = " + and);
+                } else if (circuit == 3) {
+                    int or = or(i, j);
+                    System.err.println(i + " OR " + j + " = " + or);
+                }
+            }
+        }
+    }
+
+    static int add(int a, int b) {
+        QuantumExecutionEnvironment qee = new SimpleQuantumExecutionEnvironment();
+        Program program = new Program(3);
+
+        Step prep = new Step();
+        Step superposition = new Step();
+
+        if (a == 1) prep.addGate(new X(0));
+        if (b == 1) prep.addGate(new X(1));
+
+        superposition.addGate(new Hadamard(0));
+        superposition.addGate(new Hadamard(1));
+
+        Step step0 = new Step(new Toffoli(0, 1, 2));
+        Step step1 = new Step(new Cnot(0, 1));
+
+        program.addSteps(prep, superposition, step0, step1);
+        Result result = qee.runProgram(program);
+        Renderer.renderProgram(program);
+        Renderer.showProbabilities(program, 10000);
+
+        Qubit[] qubits = result.getQubits();
+        return qubits[1].measure() + (qubits[2].measure() << 1);
+    }
+
+    static int and(int a, int b) {
+        QuantumExecutionEnvironment qee = new SimpleQuantumExecutionEnvironment();
+        Program program = new Program(3);
+
+        Step prep = new Step();
+        if (a == 1) prep.addGate(new X(0));
+        if (b == 1) prep.addGate(new X(1));
+
+        Step step0 = new Step(new Toffoli(0, 1, 2));
+
+        program.addSteps(prep, step0);
+        Result result = qee.runProgram(program);
+        Renderer.renderProgram(program);
+
+        Qubit[] qubits = result.getQubits();
+        return qubits[2].measure();
+    }
+
+    static int or(int a, int b) {
+        QuantumExecutionEnvironment qee = new SimpleQuantumExecutionEnvironment();
+        Program program = new Program(3);
+
+        Step prep = new Step();
+        if (a == 1) prep.addGate(new X(0));
+        if (b == 1) prep.addGate(new X(1));
+
+        Step step0 = new Step();
+        step0.addGate(new X(0));
+        step0.addGate(new X(1));
+        Step step1 = new Step(new Toffoli(0, 1, 2));
+        Step step2 = new Step(new X(2));
+
+        program.addSteps(prep, step0, step1, step2);
+        Result result = qee.runProgram(program);
+        Renderer.renderProgram(program);
+
+        Qubit[] qubits = result.getQubits();
+        return qubits[2].measure();
     }
 }
