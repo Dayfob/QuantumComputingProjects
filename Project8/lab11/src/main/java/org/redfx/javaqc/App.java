@@ -38,14 +38,17 @@ public class App {
         QuantumExecutionEnvironment qee = new SimpleQuantumExecutionEnvironment();
         Program program = new Program(3);
 
-        Step superposition = new Step();
-        superposition.addGate(new Hadamard(0));
-        superposition.addGate(new Hadamard(1));
+        Step superposition = new Step(new Hadamard(0), new Hadamard(1));
 
         Step step0 = new Step(new Toffoli(0, 1, 2));
         Step step1 = new Step(new Cnot(0, 1));
 
-        program.addSteps(superposition, step0, step1);
+        Step p0 = new Step(new ProbabilitiesGate(0));
+        Step p1 = new Step(new ProbabilitiesGate(0));
+        Step p2 = new Step(new ProbabilitiesGate(0));
+        Step p3 = new Step(new ProbabilitiesGate(0));
+
+        program.addSteps(p0, superposition, p1, step0, p2, step1, p3);
         Result result = qee.runProgram(program);
         Renderer.renderProgram(program);
         Renderer.showProbabilities(program, 10000);
